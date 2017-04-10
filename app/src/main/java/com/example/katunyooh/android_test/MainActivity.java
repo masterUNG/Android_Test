@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -49,7 +50,19 @@ public class MainActivity extends AppCompatActivity {
         username = editTextUserName.getText().toString();
         password = editTextPassword.getText().toString();
 
-        login(username,password);
+//        login(username,password);
+
+        try {
+            String urlPHP = "https://ranking.studio/demo/app/login.php";
+            CheckUserPassword checkUserPassword = new CheckUserPassword(MainActivity.this);
+            checkUserPassword.execute(username,password,urlPHP);
+            String result = checkUserPassword.get();
+            Log.d("10AprilV1","Result ==> " + result);
+
+
+        }catch (Exception e){
+            Log.d("10AprilV1","e invoke ==>" + e.toString());
+        }
 
     }
 
