@@ -1,8 +1,15 @@
 package com.example.katunyooh.android_test;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class SubjectUserListView extends AppCompatActivity {
 
@@ -37,6 +44,32 @@ public class SubjectUserListView extends AppCompatActivity {
             String strJSON = getCourseByUsername.get();
             Log.d(tag,"e getCourse ==>" + strJSON);
 
+            JSONArray jsonArray = new JSONArray(strJSON);
+            final String[] subjectStrings = new String[jsonArray.length()];
+            String[] descripStrings = new String[jsonArray.length()];
+
+            for (int i=0;i<jsonArray.length();i++) {
+
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                subjectStrings[i] = jsonObject.getString("subject_name");
+                descripStrings[i] = jsonObject.getString("subject_description");
+
+            }   // for
+
+            //Create ListView
+            CourseAdapter courseAdapter = new CourseAdapter(SubjectUserListView.this,
+                    subjectStrings, descripStrings);
+            ListView listView = (ListView) findViewById(R.id.livCourse);
+            listView.setAdapter(courseAdapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(SubjectUserListView.this, ShowSubjectDetail.class);
+                    intent.putExtra("Subject", subjectStrings[i]);
+                    startActivity(intent);
+                }
+            });
 
         }catch (Exception e)
         {
