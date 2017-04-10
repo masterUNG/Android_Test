@@ -59,6 +59,17 @@ public class MainActivity extends AppCompatActivity {
             String result = checkUserPassword.get();
             Log.d("10AprilV1","Result ==> " + result);
 
+            if (Boolean.parseBoolean(result)) {
+
+                //Intent to list_corese
+                Intent intent = new Intent(MainActivity.this, SubjectUserListView.class);
+                intent.putExtra(USER_NAME, username);
+                finish();
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(MainActivity.this,"Login False",Toast.LENGTH_SHORT).show();
+            }
 
         }catch (Exception e){
             Log.d("10AprilV1","e invoke ==>" + e.toString());
